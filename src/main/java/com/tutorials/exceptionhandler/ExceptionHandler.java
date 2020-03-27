@@ -9,7 +9,12 @@ import java.io.IOException;
 
 public class ExceptionHandler extends HttpServlet {
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -9068562253449023513L;
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("ExceptionHandler handling exception");
         Throwable throwable = (Throwable) request.getAttribute("javax.servlet.error.exception");
         String servletName = (String) request.getAttribute("javax.servlet.error.servlet_name");

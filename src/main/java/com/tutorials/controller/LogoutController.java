@@ -1,6 +1,6 @@
 package com.tutorials.controller;
 
-import com.tutorials.models.User;
+import java.io.IOException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -8,11 +8,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 public class LogoutController extends HttpServlet {
 
-    @Override
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4002226620888748094L;
+
+	@Override
     public void init(ServletConfig config) throws ServletException {
         System.out.println("LogoutController initialised");
     }

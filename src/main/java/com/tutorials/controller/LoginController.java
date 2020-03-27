@@ -14,7 +14,11 @@ import java.io.IOException;
 
 public class LoginController extends HttpServlet {
 
-    private UserService userService;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2445112288618121414L;
+	private UserService userService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {

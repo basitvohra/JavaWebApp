@@ -1,7 +1,6 @@
 package com.tutorials.controller;
 
-import com.tutorials.models.User;
-import com.tutorials.services.UserService;
+import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -9,12 +8,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 public class HomeController extends HttpServlet {
 
-    @Override
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4482388185757634724L;
+
+	@Override
     public void init(ServletConfig config) throws ServletException {
         System.out.println("HomeController initialised");
     }
