@@ -28,6 +28,9 @@ public class LoginController extends HttpServlet {
         HttpSession session = request.getSession();
         String userId = request.getParameter("userId");
         String password = request.getParameter("password");
+        if (userId.equals("error")) {
+            throw new ServletException("User id is invalid");
+        }
         if (userService.validateCredentials(userId, password)) {
             System.out.println("Validated");
             User user = userService.retrieveUserDetails(userId);
