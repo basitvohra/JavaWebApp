@@ -1,29 +1,48 @@
 package com.tutorials.filters;
 
-import com.tutorials.models.User;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
+
+import com.tutorials.models.User;
 
 public class AuthenticationFilter implements Filter {
 
-	private FilterConfig filterConfig;
+	private List<String> ignoreAuthenticationUriList;
 
 	public void init(FilterConfig filterConfig) throws ServletException {
 		System.out.println("AuthenticationFilter initialised");
-		this.filterConfig = filterConfig;
+		ignoreAuthenticationUriList = new ArrayList<String>();
+		String[] exceptionUris = filterConfig.getInitParameter("exceptions").split(",");
+		String[] staticResources = filterConfig.getServletContext().getInitParameter("static-resources").split(",");
+		ignoreAuthenticationUriList.addAll(Arrays.asList(exceptionUris));
+		ignoreAuthenticationUriList.addAll(Arrays.asList(staticResources));
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		System.out.println("Inside authentication filter");
 		String requestUri = ((HttpServletRequest) request).getRequestURI();
-		String requestMethod = ((HttpServletRequest) request).getMethod();
-		System.out.println(requestUri + " : " + requestMethod);
-		if (requestUri.contains("/login") || requestUri.contains("/css/") || requestUri.contains("/js/")) {
+		boolean isRequastedUriIgnoreAuthentication = false;
+		for (String exceptionUri : ignoreAuthenticationUriList) {
+			if (requestUri.startsWith(exceptionUri)) {
+				isRequastedUriIgnoreAuthentication = true;
+				break;
+			}
+		}
+		if (isRequastedUriIgnoreAuthentication) {
+			System.out.println("Authentication ignored");
 			chain.doFilter(request, response);
 		} else {
 			System.out.println("Checking authentication");
@@ -33,6 +52,7 @@ public class AuthenticationFilter implements Filter {
 				System.out.println("Authentication failed");
 				((HttpServletResponse) response).sendRedirect("login.jsp");
 			} else {
+				System.out.println("Authentication success");
 				chain.doFilter(request, response);
 			}
 		}

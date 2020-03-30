@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -19,14 +19,19 @@
 					</div>
 				</c:if>
 				<h5 class="card-title">Provide credentials</h5>
-				<form action="login" method="post">
+				<form name="loginForm" action="login" method="post"
+					onsubmit="return validateForm()">
 					<div class="form-group">
 						<label for="userId">User Id</label> <input type="text"
-							class="form-control" id="userId" name="userId">
+							class="form-control" id="userId" name="userId"
+							onkeyup="checkUserIdValid()">
+						<div id="userIdError" class="fieldError"></div>
 					</div>
 					<div class="form-group">
 						<label for="password">Password</label> <input type="password"
-							class="form-control" id="password" name="password">
+							class="form-control" id="password" name="password"
+							onkeyup="checkPasswordValid()">
+						<div id="passwordError"></div>
 					</div>
 					<button type="submit" class="btn btn-primary btn-block">Login</button>
 				</form>

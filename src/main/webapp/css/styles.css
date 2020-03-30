@@ -1,0 +1,11 @@
+.fieldError {
+	color: red;
+	margin-left: 5px;
+	font-size: small;
+}
+
+#passwordError {
+	color: red;
+	margin-left: 5px;
+	font-size: small;
+}

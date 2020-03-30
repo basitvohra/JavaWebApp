@@ -7,6 +7,11 @@
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
+	<context-param>
+		<param-name>static-resources</param-name>
+		<param-value>/JavaWebApp/css/,/JavaWebApp/js/</param-value>
+	</context-param>
+
 	<servlet>
 		<servlet-name>LoginServlet</servlet-name>
 		<servlet-class>com.tutorials.controller.LoginController</servlet-class>
@@ -68,6 +73,10 @@
 	<filter>
 		<filter-name>AuthenticationFilter</filter-name>
 		<filter-class>com.tutorials.filters.AuthenticationFilter</filter-class>
+		<init-param>
+			<param-name>exceptions</param-name>
+			<param-value>/JavaWebApp/login</param-value>
+		</init-param>
 	</filter>
 	<filter-mapping>
 		<filter-name>AuthenticationFilter</filter-name>
