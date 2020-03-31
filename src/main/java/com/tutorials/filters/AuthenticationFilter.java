@@ -15,14 +15,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import com.tutorials.models.User;
 
 public class AuthenticationFilter implements Filter {
 
+	private static final Logger LOGGER = Logger.getLogger(AuthenticationFilter.class);
 	private List<String> ignoreAuthenticationUriList;
 
 	public void init(FilterConfig filterConfig) throws ServletException {
-		System.out.println("AuthenticationFilter initialised");
+		LOGGER.debug("AuthenticationFilter initialised");
 		ignoreAuthenticationUriList = new ArrayList<String>();
 		String[] exceptionUris = filterConfig.getInitParameter("exceptions").split(",");
 		String[] staticResources = filterConfig.getServletContext().getInitParameter("static-resources").split(",");
@@ -32,7 +35,7 @@ public class AuthenticationFilter implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		System.out.println("Inside authentication filter");
+		LOGGER.debug("Inside authentication filter");
 		String requestUri = ((HttpServletRequest) request).getRequestURI();
 		boolean isRequastedUriIgnoreAuthentication = false;
 		for (String exceptionUri : ignoreAuthenticationUriList) {
@@ -42,23 +45,23 @@ public class AuthenticationFilter implements Filter {
 			}
 		}
 		if (isRequastedUriIgnoreAuthentication) {
-			System.out.println("Authentication ignored");
+			LOGGER.info("Authentication ignored");
 			chain.doFilter(request, response);
 		} else {
-			System.out.println("Checking authentication");
+			LOGGER.info("Checking authentication");
 			HttpSession session = ((HttpServletRequest) request).getSession();
 			User loggedInUser = (User) session.getAttribute("loggedInUser");
 			if (loggedInUser == null) {
-				System.out.println("Authentication failed");
+				LOGGER.info("Authentication failed");
 				((HttpServletResponse) response).sendRedirect("login.jsp");
 			} else {
-				System.out.println("Authentication success");
+				LOGGER.info("Authentication success");
 				chain.doFilter(request, response);
 			}
 		}
 	}
 
 	public void destroy() {
-		System.out.println("AuthenticationFilter destroyed");
+		LOGGER.debug("AuthenticationFilter destroyed");
 	}
 }

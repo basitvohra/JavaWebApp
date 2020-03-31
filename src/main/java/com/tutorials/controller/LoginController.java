@@ -1,7 +1,6 @@
 package com.tutorials.controller;
 
-import com.tutorials.models.User;
-import com.tutorials.services.UserService;
+import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -10,7 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
+
+import org.apache.log4j.Logger;
+
+import com.tutorials.models.User;
+import com.tutorials.services.UserService;
 
 public class LoginController extends HttpServlet {
 
@@ -18,32 +21,34 @@ public class LoginController extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = -2445112288618121414L;
+	private static final Logger LOGGER = Logger.getLogger(LoginController.class);
 	private UserService userService;
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		userService = new UserService();
-		System.out.println("LoginController initialised");
+		LOGGER.debug("LoginController initialised");
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("Validating info for login");
+		LOGGER.info("Validating info for login");
 		HttpSession session = request.getSession();
 		String userId = request.getParameter("userId");
 		String password = request.getParameter("password");
-		if (userId.equals("error")) {
+		if (userId.equals("ABC")) {
+			LOGGER.error("User id is invalid");
 			throw new ServletException("User id is invalid");
 		}
 		if (userService.validateCredentials(userId, password)) {
-			System.out.println("Validated");
+			LOGGER.info("Validated");
 			User user = userService.retrieveUserDetails(userId);
 			session.setAttribute("loggedInUser", user);
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("home.jsp");
 			requestDispatcher.forward(request, response);
 		} else {
-			System.out.println("Invalid credentials");
+			LOGGER.info("Invalid credentials");
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
 			request.setAttribute("error", "Invalid credentials!");
 			requestDispatcher.include(request, response);
@@ -59,6 +64,6 @@ public class LoginController extends HttpServlet {
 
 	@Override
 	public void destroy() {
-		System.out.println("LoginController destroyed");
+		LOGGER.debug("LoginController destroyed");
 	}
 }

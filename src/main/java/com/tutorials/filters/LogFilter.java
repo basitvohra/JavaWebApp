@@ -1,15 +1,25 @@
 package com.tutorials.filters;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+
 public class LogFilter implements Filter {
 
+	private static final Logger LOGGER = Logger.getLogger(LogFilter.class);
+
 	public void init(FilterConfig filterConfig) throws ServletException {
-		System.out.println("LogFilter initialised");
+		LOGGER.debug("LogFilter initialised");
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -19,7 +29,7 @@ public class LogFilter implements Filter {
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss z");
 		String currentTime = sdf.format(date);
-		System.out.println("<Requested Uri: " + requestUri + ">< IP : " + ipAddress + "><Time : " + currentTime + ">");
+		LOGGER.info("<Requested Uri: " + requestUri + ">< IP : " + ipAddress + "><Time : " + currentTime + ">");
 		chain.doFilter(request, response);
 	}
 
