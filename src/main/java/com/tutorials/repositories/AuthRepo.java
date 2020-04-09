@@ -20,7 +20,7 @@ public class AuthRepo {
 		boolean isValid = false;
 		try {
 			connection = DbUtil.getConnection();
-			statement = connection.prepareStatement("select active from auth where userId = ? and password = ?");
+			statement = connection.prepareStatement("select active from auth where user_id = ? and password = ?");
 			statement.setString(1, userId);
 			statement.setString(2, password);
 			result = statement.executeQuery();

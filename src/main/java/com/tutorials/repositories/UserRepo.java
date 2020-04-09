@@ -21,17 +21,17 @@ public class UserRepo {
 		User user = null;
 		try {
 			Connection connection = DbUtil.getConnection();
-			statement = connection.prepareStatement("select * from user where userId = ?");
+			statement = connection.prepareStatement("select * from user where user_id = ?");
 			statement.setString(1, userId);
 			result = statement.executeQuery();
 			if (result != null) {
 				while (result.next()) {
 					user = new User();
-					user.setUserId(result.getString("userId"));
-					user.setUserName(result.getString("userName"));
-					user.setUserRole(result.getString("userRole"));
-					user.setUserEmail(result.getString("userEmail"));
-					user.setUserContact(result.getString("userContact"));
+					user.setUserId(result.getString("user_id"));
+					user.setUserName(result.getString("user_name"));
+					user.setUserRole(result.getString("user_role"));
+					user.setUserEmail(result.getString("user_email"));
+					user.setUserContact(result.getString("user_contact"));
 				}
 			}
 		} catch (SQLException e) {
